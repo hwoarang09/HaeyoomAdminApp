@@ -1,0 +1,90 @@
+.date-container-main {
+  display: inline-block;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.date-container-center {
+  display: inline-block;
+  font-family: "Nanum Myeongjo", serif;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(5, 50px); /* 각 행의 높이 조정 가능 */
+  gap: 10px; /* 칸 사이의 간격 조정 가능 */
+  width: 150px;
+  padding: 10px 20px 10px 20px;
+  margin: auto;
+}
+.date-container-arrow {
+  display: inline-block;
+  margin: auto;
+  font-size: 20px;
+  color: #a7b1c2;
+  font: normal normal normal 14px/1 FontAwesome;
+  width: 20px;
+
+  text-align: center;
+}
+
+.arrow-left,
+.arrow-right {
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.date-container-small {
+  display: inline-block;
+  color: #f2f2f2;
+  margin: auto;
+  width: 40px;
+  padding: 4px 4px 4px 4px;
+}
+.date-container-small.active,
+.date-container-small:hover,
+.arrow-left:hover,
+.arrow-right:hover {
+  background-color: #f2f2f2;
+  color: #2f4050;
+  outline: 2px solid #f2f2f2;
+  padding: 4px 4px 4px 4px;
+  border-radius: 5px;
+}
+.date-container-small:hover .date-month,
+.date-container-small.active .date-month {
+  color: #2f4050;
+}
+
+.date-day {
+  text-align: center;
+  margin: auto;
+  line-height: 30px;
+  font-size: 2.2em;
+  border-radius: 2px;
+}
+.date-month {
+  color: #a7b1c2;
+  text-align: center;
+  margin: auto;
+  line-height: 15px;
+  font-size: 1em;
+  border-radius: 2px;
+}
+
+/* nav-second-level a 복사*/
+.cloned-a.active,
+.cloned-a:hover {
+  background-color: #293846;
+  color: white;
+}
+.cloned-a {
+  background-color: transparent;
+  color: #a7b1c2;
+  padding: 7px 10px 7px 10px;
+  padding-left: 52px;
+  font-weight: 600;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  box-sizing: border-box;
+}

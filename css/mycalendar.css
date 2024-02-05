@@ -1,0 +1,15 @@
+.weather-container {
+  display: inline-block;
+  font-family: Arial, sans-serif;
+}
+
+.date-square {
+  width: 60px;
+  height: 60px;
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+  line-height: 60px;
+  font-size: 1.2em;
+  border-radius: 10px;
+}
