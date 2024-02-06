@@ -1,7 +1,4 @@
-export var designerListFullHTML = `
-
-
-<div class="row wrapper border-bottom white-bg page-heading">
+export var designerListFullHTML = `<div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
     <h2>디자이너 정보관리</h2>
     <ol class="breadcrumb">
@@ -74,11 +71,7 @@ export var designerListFullHTML = `
       </div>
     </div>
   </div>
-</div>
-
-
-
-`;
+</div>`;
 
 export var designerAddFullHTML = `
 <!--우측 콘텐츠 헤더영역 -->
@@ -112,8 +105,8 @@ export var designerAddFullHTML = `
             <input
               type="text"
               class="form-control"
-              name="designer_name"
-              id="designer_name"
+              name="intputAddDesignerName"
+              id="intputAddDesignerName"
             />
           </div>
         </div>
@@ -123,8 +116,8 @@ export var designerAddFullHTML = `
             <input
               type="text"
               class="form-control"
-              name="position"
-              id="position"
+              name="inputAddPosition"
+              id="inputAddPosition"
             />
           </div>
         </div>
@@ -137,15 +130,15 @@ export var designerAddFullHTML = `
             <input
               type="text"
               class="form-control"
-              name="designer_desc"
-              id="designer_desc"
+              name="inputAddDesignerDesc"
+              id="inputAddDesignerDesc"
             />
           </div>
         </div>
         <div class="col-sm-6">
           <div class="form-group">
             <label class="control-label">Email</label>
-            <input type="text" class="form-control" name="email" id="email" />
+            <input type="text" class="form-control" name="inputAddEmail" id="inputAddEmail" />
           </div>
         </div>
       </div>
@@ -157,8 +150,8 @@ export var designerAddFullHTML = `
             <input
               type="text"
               class="form-control"
-              name="telephone"
-              id="telephone"
+              name="inputAddTelephone"
+              id="inputAddTelephone"
             />
           </div>
         </div>
@@ -168,8 +161,8 @@ export var designerAddFullHTML = `
             <input
               type="text"
               class="form-control"
-              name="used_yn_code"
-              id="used_yn_code"
+              name="intpuAddUsedYnCode"
+              id="intpuAddUsedYnCode"
             />
           </div>
         </div>
@@ -177,18 +170,16 @@ export var designerAddFullHTML = `
 
 
       <div class="text-center">
-        <button type="button" class="btn btn-primary" id="button-save">
+        <button type="button" onclick="funcButtonAddSave()" class="btn btn-primary" id="buttonAddSave" name="buttonAddSave">
           저장
         </button>
-        <a href="#" type="button" class="btn btn-info">목록</a>
+        <a href="#" type="button" class="btn btn-info" id="buttonAddList" name="buttonAddList">목록</a>
       </div>
     </div>
   </div>
 </form>`;
 
-export var designerEditFullHTML = `
-
-<div class="row wrapper border-bottom white-bg page-heading">
+export var designerEditFullHTML = `<div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
     <h2>디자이너 수정</h2>
     <ol class="breadcrumb">
@@ -342,5 +333,4 @@ export var designerEditFullHTML = `
       <a href="#" class="btn btn-info" type="button">목록</a>
     </div>
   </form>
-</div>
-`;
+</div>`;

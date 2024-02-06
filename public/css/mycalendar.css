@@ -1,3 +1,7 @@
+.nodisplay {
+  display: none;
+}
+
 .date-container-main {
   display: inline-block;
   display: grid;
