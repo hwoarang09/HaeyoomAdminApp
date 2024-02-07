@@ -50,6 +50,12 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         comment: "등록일시",
       },
+
+      used_yn_code: {
+        type: DataTypes.TINYINT,
+        allowNull: false,
+        comment: "삭제여부",
+      },
     },
     {
       sequelize,

@@ -14,10 +14,20 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         comment: "예약 디자이너 번호",
       },
+      designer_name: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        comment: "예약 디자이너 이름",
+      },
       customer_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         comment: "예약 손님 번호",
+      },
+      customer_name: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        comment: "예약 손님 이름",
       },
       reservation_state: {
         type: DataTypes.STRING(1000),
@@ -54,10 +64,10 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: true,
         comment: "예약종료시간",
       },
-      del_date: {
-        type: DataTypes.DATE,
-        allowNull: true,
-        comment: "삭제일시",
+      used_yn_code: {
+        type: DataTypes.TINYINT,
+        allowNull: false,
+        comment: "삭제여부",
       },
     },
     {

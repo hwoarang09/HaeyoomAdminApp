@@ -22,14 +22,16 @@ var reservationListButton = document.getElementById("reservationListButton");
 var reservationAddButton = document.getElementById("reservationAddButton");
 var reservationEditButton = document.getElementById("reservationEditButton");
 var pageWrapperMain = document.getElementById("page-wrapper-main");
+var reservationListRow = document.getElementById("reservationListRow");
 
 // <왼쪽메뉴> 이벤트리스너 - 3개 이동코드
-reservationLeftUl.addEventListener("click", function (event) {
+reservationLeftUl.addEventListener("click", async function (event) {
   var target = event.target;
 
-  if (target.id === "reservationListButton")
+  if (target.id === "reservationListButton") {
     setActiveButton(reservationListButton, reservationListFullHTML);
-  else if (target.id === "reservationAddButton")
+    await listFunction("http://127.0.0.1:3001/reservation/list", null, "GET");
+  } else if (target.id === "reservationAddButton")
     setActiveButton(reservationAddButton, reservationAddFullHTML);
   else if (target.id === "reservationEditButton")
     setActiveButton(reservationEditButton, reservationEditFullHTML);
@@ -45,6 +47,9 @@ function setActiveButton(button, htmlContent) {
     siblingsMainWrapper[i].classList.add("nodisplay");
   button.classList.add("active");
   htmlContent.classList.remove("nodisplay");
+  htmlContent.querySelectorAll("input").forEach((input) => {
+    input.value = "";
+  });
 }
 
 //
@@ -66,26 +71,68 @@ var list_ButtonAdd = document.getElementById("reservationList_ButtonAdd");
 var list_ButtonList = document.getElementById("reservationList_ButtonList");
 
 // <예약 목록> 이벤트리스너 - 버튼 누르면 동작하는 함수
-list_ButtonAdd.addEventListener("click", function () {
-  console.log("111");
-  list_FuncButtonAdd();
+list_ButtonAdd.addEventListener("click", async function () {
+  await list_FuncButtonAdd();
 });
-list_ButtonList.addEventListener("click", function () {
-  list_FuncButtonList();
+list_ButtonList.addEventListener("click", async function () {
+  await list_FuncButtonList();
 });
 //  <디자이너 목록>에서 버튼 Onclick함수들
 function list_FuncButtonAdd() {
-  console.log("Add");
-  console.log("손님 이름 : ", list_CustomerName.value);
-  console.log("디자이너 이름 : ", list_DesignerName.value);
-  console.log("예약상태 : ", list_State.value);
+  setActiveButton(reservationAddButton, reservationAddFullHTML);
 }
-function list_FuncButtonList() {
-  console.log("List");
-  console.log("손님 이름 : ", list_CustomerName.value);
-  console.log("디자이너 이름 : ", list_DesignerName.value);
-  console.log("예약상태 : ", list_State.value);
+async function list_FuncButtonList() {
+  const data = {
+    customer_name: list_CustomerName.value,
+    designer_name: list_DesignerName.value,
+    reservation_state: list_State.value,
+  };
+
+  console.log(data);
+  await listFunction("http://127.0.0.1:3001/reservation/list", data, "POST");
 }
+
+async function listFunction(url, data, method) {
+  const options = {
+    method: method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    ...(method === "POST" && { body: JSON.stringify(data) }),
+  };
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const res = await response.json();
+    console.log("Response data:", res);
+    const urlString = new URL(url);
+    const path = urlString.pathname;
+    console.log("path ", path);
+    if (path === "/reservation/list") {
+      reservationListRow.innerHTML = "";
+      for (let i = 0; i < res.data.length; i++) {
+        reservationListRow.innerHTML += `<tr>
+        <td>
+          <a href="/admin/modify/${res.data[i].reservation_id}"
+            >${res.data[i].reservation_id}</a
+          >
+        </td>
+        <td>${res.data[i].customer_name}</td>
+        <td>${res.data[i].designer_name}</td>
+        <td>${res.data[i].reservation_state}</td>
+        <td>${res.data[i].memo}</td>
+        <td>${res.data[i].reg_date}</td>
+      </tr>`;
+      }
+    }
+  } catch (error) {
+    console.error("There was a problem with your fetch operation:", error);
+  }
+}
+
 //
 //  <예약 추가>
 //
@@ -113,14 +160,14 @@ var add_ButtonSave = document.getElementById("reservationAdd_ButtonSave");
 var add_ButtonList = document.getElementById("reservationAdd_ButtonList");
 
 // <디자이너 추가> 이벤트리스너 - 버튼 누르면 동작하는 함수
-add_ButtonSave.addEventListener("click", function () {
-  add_FuncButtonSave();
+add_ButtonSave.addEventListener("click", async function () {
+  await add_FuncButtonSave();
 });
-add_ButtonList.addEventListener("click", function () {
-  add_FuncButtonList();
+add_ButtonList.addEventListener("click", async function () {
+  await add_FuncButtonList();
 });
 //  <디자이너 추가>에서 버튼 Onclick함수들
-function add_FuncButtonSave() {
+async function add_FuncButtonSave() {
   console.log("Save");
   console.log("손님 이름 : ", add_CustomerName.value);
   console.log("디자이너 이름 : ", add_DesignerName.value);
@@ -131,9 +178,31 @@ function add_FuncButtonSave() {
   console.log("등록일자 : ", add_RegDate.value);
   console.log("예약시작 : ", add_StartDate.value);
   console.log("예약종료 : ", add_EndDate.value);
+
+  const data = {
+    designer_name: add_CustomerName.value,
+    customer_name: add_DesignerName.value,
+    reservation_state: add_State.value,
+    memo: add_Memo.value,
+    cut_style: add_CutStyle.value,
+    price: add_Price.value,
+    reg_date: add_RegDate.value,
+    resrevation_start_date: add_StartDate.value,
+    reservation_end_date: add_EndDate.value,
+  };
+
+  console.log(data);
+  await listFunction(
+    "http://127.0.0.1:3001/reservation/create",
+    data,
+    "POST"
+  ).then(() =>
+    listFunction("http://127.0.0.1:3001/reservation/list", null, "GET")
+  );
+  setActiveButton(reservationListButton, reservationListFullHTML);
 }
 
-function add_FuncButtonList() {
+async function add_FuncButtonList() {
   console.log("List");
   console.log("손님 이름 : ", add_CustomerName.value);
   console.log("디자이너 이름 : ", add_DesignerName.value);
@@ -144,6 +213,8 @@ function add_FuncButtonList() {
   console.log("등록일자 : ", add_RegDate.value);
   console.log("예약시작 : ", add_StartDate.value);
   console.log("예약종료 : ", add_EndDate.value);
+  setActiveButton(reservationListButton, reservationListFullHTML);
+  await listFunction("http://127.0.0.1:3001/reservation/list", null, "GET");
 }
 //
 //  <디자이너 수정>
@@ -178,17 +249,17 @@ var edit_ButtonDelete = document.getElementById("reservationEdit_ButtonDelete");
 var edit_ButtonList = document.getElementById("reservationEdit_ButtonList");
 
 // <디자이너 추가> 이벤트리스너 - 버튼 누르면 동작하는 함수
-edit_ButtonSave.addEventListener("click", function () {
-  edit_FuncButtonSave();
+edit_ButtonSave.addEventListener("click", async function () {
+  await edit_FuncButtonSave();
 });
-edit_ButtonDelete.addEventListener("click", function () {
-  edit_FuncButtonDelete();
+edit_ButtonDelete.addEventListener("click", async function () {
+  await edit_FuncButtonDelete();
 });
-edit_ButtonList.addEventListener("click", function () {
-  edit_FuncButtonList();
+edit_ButtonList.addEventListener("click", async function () {
+  await edit_FuncButtonList();
 });
 //  <디자이너 추가>에서 버튼 Onclick함수들
-function edit_FuncButtonSave() {
+async function edit_FuncButtonSave() {
   console.log("Save");
   console.log("예약번호 : ", edit_ReservationId.value);
   console.log("손님 이름 : ", edit_CustomerName.value);
@@ -202,7 +273,7 @@ function edit_FuncButtonSave() {
   console.log("예약종료 : ", edit_EndDate.value);
 }
 
-function edit_FuncButtonDelete() {
+async function edit_FuncButtonDelete() {
   console.log("Delete");
   console.log("예약번호 : ", edit_ReservationId.value);
   console.log("손님 이름 : ", edit_CustomerName.value);
@@ -215,7 +286,7 @@ function edit_FuncButtonDelete() {
   console.log("예약시작 : ", edit_StartDate.value);
   console.log("예약종료 : ", edit_EndDate.value);
 }
-function edit_FuncButtonList() {
+async function edit_FuncButtonList() {
   console.log("List");
   console.log("예약번호 : ", edit_ReservationId.value);
   console.log("손님 이름 : ", edit_CustomerName.value);
@@ -227,4 +298,6 @@ function edit_FuncButtonList() {
   console.log("등록일자 : ", edit_RegDate.value);
   console.log("예약시작 : ", edit_StartDate.value);
   console.log("예약종료 : ", edit_EndDate.value);
+  setActiveButton(reservationListButton, reservationListFullHTML);
+  await listFunction("http://127.0.0.1:3001/reservation/list", null, "GET");
 }

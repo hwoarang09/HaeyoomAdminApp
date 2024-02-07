@@ -17,9 +17,6 @@ var months = [
   "Dec",
 ];
 var options = { timeZone: "Australia/Sydney" };
-// var australiaDateTimeString = new Date().toLocaleString("en-AU", options);
-
-// var today = new Date(australiaDateTimeString);
 var today = new Date();
 today.toLocaleString("en-AU", options);
 console.log(today);
@@ -38,8 +35,9 @@ var dateContainerArrowRight = document.getElementById(
 );
 var dateContainerArrowVariable = 0;
 
-var pageWrapper = document.getElementById("page-wrapper");
-
+var tableFullHTML = document.getElementById("tableFullHTML");
+var tableWrapper = document.getElementById("table-wrapper");
+var pageWrapperMain = document.getElementById("page-wrapper-main");
 const randomInt = function (min, max) {
   return Math.trunc(Math.random() * (max - min) + 1) + min;
 };
@@ -55,19 +53,24 @@ fillTenDate(dateContainerArrowVariable);
 document
   .getElementById("date-container-center")
   .addEventListener("click", function (e) {
-    // 클릭 이벤트 발생 시 실행할 코드 작성
+    try {
+      var siblings = e.currentTarget.children;
+      var siblingsMainWrapper = pageWrapperMain.children;
 
-    // console.log("LINK", e.target, e.currentTarget);
-    // console.log(e.currentTarget === this);
-    var siblings = e.currentTarget.children;
-    console.log(siblings);
-    for (var i = 0; i < siblings.length; i++)
-      siblings[i].classList.remove("active");
-    e.target.closest(".date-container-small").classList.add("active");
-    if (e.target.parentNode.classList.contains("date-container-small")) {
-      squareDateClick(e.target.parentNode.id);
+      for (var i = 0; i < siblings.length; i++)
+        siblings[i].classList.remove("active");
+      e.target.closest(".date-container-small").classList.add("active");
+
+      for (var i = 0; i < siblingsMainWrapper.length; i++)
+        siblingsMainWrapper[i].classList.add("nodisplay");
+      tableFullHTML.classList.remove("nodisplay");
+
+      if (e.target.parentNode.classList.contains("date-container-small")) {
+        squareDateClick(e.target.parentNode.id);
+      }
+    } catch (err) {
+      console.log(err);
     }
-
     //e.stopPropagation();
   });
 
@@ -82,7 +85,8 @@ dateContainerArrowRight.addEventListener("click", function (e) {
 
 ///함수선언
 function squareDateClick(idName) {
-  pageWrapper.innerHTML = idName;
+  console.log(idName);
+  tableWrapper.innerHTML = idName;
 }
 
 function fillTenDate(count) {

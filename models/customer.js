@@ -35,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
         comment: "멤버쉽상태코드",
       },
       birth_date: {
-        type: DataTypes.STRING(6),
+        type: DataTypes.STRING(50),
         allowNull: true,
         comment: "생년월일",
       },
@@ -52,17 +52,18 @@ module.exports = function (sequelize, DataTypes) {
       manage_designer_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        comment: "첫등록디자이너번호",
+        comment: "담당디자이너번호",
       },
       edit_date: {
         type: DataTypes.DATE,
         allowNull: true,
         comment: "수정일시",
       },
-      edit_customer_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        comment: "수정자고유번호",
+
+      used_yn_code: {
+        type: DataTypes.TINYINT,
+        allowNull: false,
+        comment: "삭제여부",
       },
     },
     {
